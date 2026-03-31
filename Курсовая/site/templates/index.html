@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Платная поликлиника</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            max-width: 800px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        h1 { color: #333; margin-bottom: 20px; font-size: 32px; }
+        .subtitle { color: #666; margin-bottom: 30px; font-size: 18px; }
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .btn:hover { background: #5a67d8; transform: translateY(-2px); }
+        .btn-outline {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        .btn-outline:hover { background: #667eea; color: white; }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .feature {
+            padding: 20px;
+            background: #f7f7f7;
+            border-radius: 10px;
+        }
+        .feature h3 { color: #667eea; margin-bottom: 10px; }
+        .feature p { color: #666; font-size: 14px; }
+        @media (max-width: 600px) {
+            .container { padding: 30px; margin: 20px; }
+            .features { grid-template-columns: 1fr; }
+            .buttons { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏥 Платная поликлиника</h1>
+        <p class="subtitle">Система учета обращений пациентов</p>
+        
+        <div class="buttons">
+            <a href="/login" class="btn">Вход</a>
+            <a href="/register" class="btn btn-outline">Регистрация</a>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <h3>📝 Запись к врачу</h3>
+                <p>Онлайн-запись в несколько кликов</p>
+            </div>
+            <div class="feature">
+                <h3>📊 История обращений</h3>
+                <p>Все визиты в личном кабинете</p>
+            </div>
+            <div class="feature">
+                <h3>💰 Прозрачные цены</h3>
+                <p>Фиксированная стоимость услуг</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

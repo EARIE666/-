@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель управления</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar h1 { font-size: 24px; }
+        .user-info { display: flex; align-items: center; gap: 20px; }
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .card h2 {
+            margin-bottom: 15px;
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .btn-primary { background: #667eea; color: white; }
+        .btn-success { background: #48bb78; color: white; }
+        .btn-danger { background: #e53e3e; color: white; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-card h3 { font-size: 14px; color: #666; margin-bottom: 10px; }
+        .stat-card .number { font-size: 32px; font-weight: bold; color: #667eea; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f7f7f7; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+        .status-active { color: #48bb78; font-weight: bold; }
+        .status-completed { color: #667eea; }
+        .status-cancelled { color: #e53e3e; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>🏥 Платная поликлиника</h1>
+        <div class="user-info">
+            <span>👤 {{ session.full_name }}</span>
+            <span>📌 {{ 'Администратор' if role == 'admin' else 'Пациент' }}</span>
+            <a href="/logout" class="logout-btn">Выйти</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- ==================== АДМИНИСТРАТОР ==================== -->
+        {% if role == 'admin' %}
+        <div class="stats-grid">
+            <div class="stat-card"><h3>👥 Пациентов</h3><div class="number">{{ data.total_patients }}</div></div>
+            <div class="stat-card"><h3>👨‍⚕️ Врачей</h3><div class="number">{{ data.total_doctors }}</div></div>
+            <div class="stat-card"><h3>📅 Записей</h3><div class="number">{{ data.total_appointments }}</div></div>
+        </div>
+        
+        <div class="grid-2">
+            <div class="card">
+                <h2>➕ Добавить врача</h2>
+                <form method="POST" action="/add_doctor">
+                    <div class="form-group"><input type="text" name="full_name" placeholder="ФИО врача" required></div>
+                    <div class="form-group"><input type="text" name="specialization" placeholder="Специализация" required></div>
+                    <div class="form-group"><input type="number" name="price" placeholder="Цена приема" step="0.01" required></div>
+                    <button type="submit" class="btn btn-success">Добавить</button>
+                </form>
+            </div>
+            
+            <div class="card">
+                <h2>👨‍⚕️ Список врачей</h2>
+                {% if data.doctors %}
+                <table>
+                    <thead><tr><th>ФИО</th><th>Специализация</th><th>Цена</th></tr></thead>
+                    <tbody>
+                        {% for d in data.doctors %}
+                        <tr><td>{{ d.full_name }}</td><td>{{ d.specialization }}</td><td>{{ d.consultation_price }} ₽</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}<p>Нет врачей</p>{% endif %}
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>📋 Все записи</h2>
+            {% if data.appointments %}
+            <table>
+                <thead><tr><th>Дата</th><th>Пациент</th><th>Врач</th><th>Статус</th><th>Действие</th></tr></thead>
+                <tbody>
+                    {% for a in data.appointments %}
+                    <tr>
+                        <td>{{ a.appointment_datetime }}</td>
+                        <td>{{ a.patient_name }}</td>
+                        <td>{{ a.doctor_name }}</td>
+                        <td class="status-{{ a.status }}">{{ a.status }}</td>
+                        <td>
+                            {% if a.status == 'active' %}
+                            <a href="/complete/{{ a.id }}" class="btn btn-success" style="padding: 5px 10px;">Завершить</a>
+                            {% endif %}
+                            <a href="#" onclick="showMedicalForm({{ a.id }})" class="btn btn-primary" style="padding: 5px 10px;">Мед.запись</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}<p>Нет записей</p>{% endif %}
+        </div>
+        
+        <div class="card">
+            <h2>👥 Пациенты</h2>
+            {% if data.patients %}
+            <table>
+                <thead><tr><th>ФИО</th><th>Телефон</th><th>Email</th><th>Дата регистрации</th></tr></thead>
+                <tbody>
+                    {% for p in data.patients %}
+                    <tr>
+                        <td>{{ p.full_name }}</td>
+                        <td>{{ p.phone }}</td>
+                        <td>{{ p.email }}</td>
+                        <td>{{ p.created_at }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}<p>Нет пациентов</p>{% endif %}
+        </div>
+        
+        <!-- Форма для медицинской записи (скрытая) -->
+        <div id="medicalModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+            <div style="background:white; padding:30px; border-radius:10px; width:500px;">
+                <h3>Медицинская запись</h3>
+                <form id="medicalForm" method="POST">
+                    <div class="form-group"><textarea name="complaints" rows="3" placeholder="Жалобы пациента"></textarea></div>
+                    <div class="form-group"><input type="text" name="diagnosis" placeholder="Диагноз"></div>
+                    <div class="form-group"><textarea name="recommendations" rows="3" placeholder="Рекомендации"></textarea></div>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="button" onclick="closeModal()" class="btn" style="background:#ccc;">Отмена</button>
+                </form>
+            </div>
+        </div>
+        
+        <script>
+            function showMedicalForm(appointmentId) {
+                document.getElementById('medicalForm').action = '/add_medical_record/' + appointmentId;
+                document.getElementById('medicalModal').style.display = 'flex';
+            }
+            function closeModal() {
+                document.getElementById('medicalModal').style.display = 'none';
+            }
+        </script>
+        
+        <!-- ==================== ПАЦИЕНТ ==================== -->
+        {% elif role == 'patient' %}
+        <div class="card">
+            <h2>📝 Запись к врачу</h2>
+            <a href="/book" class="btn btn-primary">Записаться на прием</a>
+        </div>
+        
+        <div class="card">
+            <h2>📅 Мои записи</h2>
+            {% if data.active_appointments %}
+            <table>
+                <thead><tr><th>Дата и время</th><th>Врач</th><th>Специализация</th><th>Цена</th><th>Действие</th></tr></thead>
+                <tbody>
+                    {% for a in data.active_appointments %}
+                    <tr>
+                        <td>{{ a.appointment_datetime }}</td>
+                        <td>{{ a.doctor_name }}</td>
+                        <td>{{ a.specialization }}</td>
+                        <td>{{ a.consultation_price }} ₽</td>
+                        <td><a href="/cancel/{{ a.id }}" class="btn btn-danger" style="padding: 5px 10px;">Отменить</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}<p>Нет активных записей</p>{% endif %}
+        </div>
+        
+        <div class="card">
+            <h2>📜 История визитов</h2>
+            {% if data.history %}
+            <table>
+                <thead><tr><th>Дата</th><th>Врач</th><th>Диагноз</th><th>Рекомендации</th><th>Статус</th></tr></thead>
+                <tbody>
+                    {% for v in data.history %}
+                    <tr>
+                        <td>{{ v.appointment_datetime }}</td>
+                        <td>{{ v.doctor_name }}</td>
+                        <td>{{ v.diagnosis or '—' }}</td>
+                        <td>{{ v.recommendations or '—' }}</td>
+                        <td class="status-{{ v.status }}">{{ v.status }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}<p>История пуста</p>{% endif %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
