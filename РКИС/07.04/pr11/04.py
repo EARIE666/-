@@ -1,3 +1,4 @@
+
 # ================== Задача 4 — Перегрузка метода с default-параметрами ==================
 class Printer:
     def print_message(self, msg, times=1):
