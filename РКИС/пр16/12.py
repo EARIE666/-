@@ -1,14 +1,8 @@
 # File: 12.py
-from datetime import datetime, timedelta
+import re   
+text = "<p>Hello</p>"
 
-def task12():
-    start = datetime(2026, 4, 1)
-    end = datetime(2026, 4, 15)
-    
-    current = start
-    workdays = 0
-    while current <= end:
-        if current.weekday() < 5: # Пн-Пт
-            workdays += 1
-        current += timedelta(days=1)
-    print(workdays)
+def task12(text):
+    return re.sub(r"\<\/?\w{1}\>", "", text)
+        
+print(task12(text))
