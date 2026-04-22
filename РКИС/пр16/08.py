@@ -1,8 +1,8 @@
 # File: 08.py
-def task9():
-    filenames = ['file1.txt', 'file2.txt']
-    with open('result.txt', 'w', encoding='utf-8') as outfile:
-        for fname in filenames:
-            with open(fname, 'r', encoding='utf-8') as infile:
-                outfile.write(infile.read())
-                outfile.write('\n') # разделитель между файлами
+import re   
+text = "Dates: 2024-01-01 and 2025-12-31" # YYYY-MM-DD.
+
+def task8(text):
+    return re.findall(r"\d{4}\-\d{2}\-\d{2}", text)
+        
+print(task8(text))
