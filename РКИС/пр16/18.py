@@ -1,10 +1,9 @@
 # File: 18.py
-from datetime import datetime
+import re
 
-def task18():
-    deadline = datetime(2026, 3, 1)
-    now = datetime.now()
-    if now > deadline:
-        print("Дедлайн просрочен!")
-    else:
-        print("Еще есть время.")
+card = "1234 5678 9012 3456"
+
+# Заменяем все цифры кроме последних 4 на *
+result = re.sub(r"\d(?=.*\d{4})", "*", card)
+
+print(result)  # **** **** **** 3456
