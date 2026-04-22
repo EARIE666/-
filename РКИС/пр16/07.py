@@ -1,6 +1,12 @@
 # File: 07.py
-def task7():
-    with open('log.txt', 'r', encoding='utf-8') as f:
-        for line in f:
-            if "ERROR" in line:
-                print(line.strip())
+import re   
+text = "+37112345678" #: +371XXXXXXXX (Латвия)
+
+def task7(text):
+    match = re.search(r"\+\d{11}$", text)
+    if match:
+        return True
+    else:
+        return False
+        
+print(task7(text))
