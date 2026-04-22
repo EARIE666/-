@@ -2,11 +2,11 @@
 import re   
 text = "test@example.com"
 
-def task2(text):
+def task3(text):
     match = re.search(r"\w+\@\w+\.\w+", text, re.I)
     if match:
         return True
     else:
         return False
         
-print(task2(text))
+print(task3(text))
