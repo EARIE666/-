@@ -1,9 +1,8 @@
 # File: 14.py
-from datetime import datetime
+import re   
+text = "hello hello world"
 
-def task14():
-    birth_str = input("Введите дату рождения (ГГГГ-ММ-ДД): ")
-    birth = datetime.strptime(birth_str, "%Y-%m-%d")
-    today = datetime.now()
-    delta = today - birth
-    print(f"Возраст в днях: {delta.days}")
+def task14(text):
+    return re.findall(r"\b(\w+)\s+\1\b", text)
+        
+print(task14(text))
