@@ -1,9 +1,8 @@
 # File: 15.py
-from datetime import datetime
+import re   
+text = "Сделайте первую букву каждого слова заглавной с помощью re."
 
-def task15():
-    dates_str = ["2023-05-10", "2020-01-01", "2024-12-31"]
-    dates_obj = [datetime.strptime(d, "%Y-%m-%d") for d in dates_str]
-    dates_obj.sort()
-    for d in dates_obj:
-        print(d.date())
+def task15(text):
+    return re.sub(r"\b\w", lambda m: m.group().upper(), text)
+        
+print(task15(text))
