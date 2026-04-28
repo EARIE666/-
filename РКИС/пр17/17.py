@@ -1,11 +1,12 @@
-# File: 17.py
-import time
-from datetime import datetime
+import csv
 
-def task17():
-    now = datetime.now()
-    timestamp = int(time.mktime(now.timetuple()))
-    print(f"Timestamp: {timestamp}")
-    
-    back_to_date = datetime.fromtimestamp(timestamp)
-    print(f"Обратно: {back_to_date}")
+users = [
+    ['Name', 'Age', 'Role'],
+    ['Alice', 30, 'Dev'],
+    ['Bob', 25, 'Designer']
+]
+
+with open('users.csv', 'w', newline='', encoding='utf-8') as f:
+    writer = csv.writer(f)
+    writer.writerows(users)
+print("CSV файл создан")
