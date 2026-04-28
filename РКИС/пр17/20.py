@@ -1,12 +1,25 @@
-# File: 20.py
-def task20():
-    errors_by_day = {}
-    with open('log.txt', 'r', encoding='utf-8') as f:
-        for line in f:
-            if "ERROR" in line:
-                # Предполагаем, что дата всегда первые 10 символов
-                date = line[:10] 
-                errors_by_day[date] = errors_by_day.get(date, 0) + 1
+import random
+import os
+from datetime import datetime
+
+file_path = 'numbers.txt'
+
+# 1. Генерирует 5 случайных чисел
+numbers = [random.randint(1, 100) for _ in range(5)]
+
+# 3. Подготовка даты
+current_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+# 2. Сохраняет их в файл (с датой)
+with open(file_path, 'w', encoding='utf-8') as f:
+    f.write(f"Дата записи: {current_date}\n")
+    f.write("Случайные числа: " + ", ".join(map(str, numbers)) + "\n")
+
+# 4. Проверяет существование файла
+if os.path.exists(file_path):
+    print(f"Файл {file_path} успешно создан.")
     
-    for date, count in errors_by_day.items():
-        print(f"{date}: {count}")
+    # 5. Читает файл и выводит содержимое
+    with open(file_path, 'r', encoding='utf-8') as f:
+        print("\nСодержимое файла:")
+        print(f.read())
