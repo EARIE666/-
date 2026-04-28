@@ -1,2 +1,3 @@
-import random
-print(random.randint(1, 10))
+import math
+x = 3.7
+print(math.floor(x), math.ceil(x))
