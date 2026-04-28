@@ -1,7 +1,14 @@
-# File: 19.py
-from datetime import datetime
+import random
+from datetime import datetime, timedelta
 
-def task19(message):
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    with open('log.txt', 'a', encoding='utf-8') as f:
-        f.write(f"[{timestamp}] {message}\n")
+def get_random_date_2024():
+    start_date = datetime(2024, 1, 1)
+    end_date = datetime(2024, 12, 31)
+    
+    # Разница в днях
+    delta = end_date - start_date
+    random_days = random.randint(0, delta.days)
+    
+    return start_date + timedelta(days=random_days)
+
+print(get_random_date_2024().strftime('%Y-%m-%d'))
