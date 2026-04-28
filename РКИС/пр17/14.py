@@ -1,9 +1,6 @@
-# File: 14.py
-from datetime import datetime
+import os
 
-def task14():
-    birth_str = input("Введите дату рождения (ГГГГ-ММ-ДД): ")
-    birth = datetime.strptime(birth_str, "%Y-%m-%d")
-    today = datetime.now()
-    delta = today - birth
-    print(f"Возраст в днях: {delta.days}")
+folder = 'folder'
+file_name = 'file.txt'
+full_path = os.path.join(folder, file_name)
+print(full_path) 
