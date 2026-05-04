@@ -1,4 +1,3 @@
-import datetime
-date1 = datetime.date(2002, 12, 2)
-date2 = datetime.date(1991, 1, 2)
-print(date1-date2)
+with open('file.txt', 'w', encoding='utf-8') as file:
+    file.write("Line 1\n")
+    file.write("Line 2\n")
