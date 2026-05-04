@@ -1,3 +1,2 @@
-import math
-x = 3.7
-print(math.floor(x), math.ceil(x))
+with open('output.txt', 'a', encoding = 'utf-8') as file:
+    file.write('Python')
