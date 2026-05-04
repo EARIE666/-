@@ -1,5 +1,14 @@
-import os
+import threading
+import time
 
-if os.path.exists('data.txt'):
-    file_size = os.path.getsize('data.txt')
-    print(f"Размер файла: {file_size} байт")
+def background_task():
+    while True:
+        print("Фоновый поток работает...")
+        time.sleep(1)
+
+daemon_thread = threading.Thread(target=background_task)
+daemon_thread.daemon = True
+daemon_thread.start()
+
+time.sleep(5)
+print
