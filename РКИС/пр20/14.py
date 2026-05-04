@@ -1,6 +1,22 @@
-import os
+class OneTimeAssignmentDescriptor:
+    def __init__(self):
+        self._value = None
+        self._assigned = False
 
-folder = 'folder'
-file_name = 'file.txt'
-full_path = os.path.join(folder, file_name)
-print(full_path) 
+    def __get__(self, instance, owner):
+        return self._value
+
+    def __set__(self, instance, value):
+        if self._assigned:
+            raise AttributeError("Value already assigned and cannot be changed")
+        self._value = value
+        self._assigned = True
+
+
+class MyClass:
+    attr = OneTimeAssignmentDescriptor()
+
+
+obj = MyClass()
+obj.attr = 100
+# obj.attr = 200  # AttributeError
