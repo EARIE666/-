@@ -1,3 +1,3 @@
-from datetime import datetime, timedelta
-
-print(datetime.today() + timedelta(days=7))
+with open('input.txt', 'r', encoding='utf-8') as InpFile, open('output.txt', 'w', encoding='utf-8') as OutFile:
+    content = InpFile.read().upper()
+    OutFile.write(content)
