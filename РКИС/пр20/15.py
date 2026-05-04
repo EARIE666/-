@@ -1,11 +1,20 @@
-import json
+class ChangeLogDescriptor:
+    def __init__(self):
+        self._value = None
 
-data = {
-    "name": "Ivan",
-    "age": 25,
-    "skills": ["python", "data"]
-}
+    def __get__(self, instance, owner):
+        return self._value
 
-with open('data.json', 'w', encoding='utf-8') as f:
-    json.dump(data, f, indent=4)
-print("Данные сохранены в data.json")
+    def __set__(self, instance, value):
+        old = self._value
+        print(f"Old value: {old}, New value: {value}")
+        self._value = value
+
+
+class MyClass:
+    attr = ChangeLogDescriptor()
+
+
+obj = MyClass()
+obj.attr = 10
+obj.attr = 20
