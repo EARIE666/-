@@ -1,8 +1,18 @@
-import asyncio
+class SimpleDescriptor:
+    def __init__(self):
+        self._value = None
 
-async def simple_async_function():
-    print("Начало выполнения")
-    await asyncio.sleep(1)
-    print("Сообщение после задержки")
+    def __get__(self, instance, owner):
+        return self._value
 
-asyncio.run(simple_async_function())
+    def __set__(self, instance, value):
+        self._value = value
+
+
+class MyClass:
+    attr = SimpleDescriptor()
+
+
+obj = MyClass()
+obj.attr = 42
+print(obj.attr)
