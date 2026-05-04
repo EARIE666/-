@@ -1,25 +1,32 @@
-import random
-import os
-from datetime import datetime
+class ComplexDescriptor:
+    def __init__(self, min_val=0, max_val=100):
+        self.min_val = min_val
+        self.max_val = max_val
+        self._value = None
 
-file_path = 'numbers.txt'
+    def __get__(self, instance, owner):
+        print(f"Getting value: {self._value}")
+        return self._value
 
-# 1. Генерирует 5 случайных чисел
-numbers = [random.randint(1, 100) for _ in range(5)]
+    def __set__(self, instance, value):
+        if not isinstance(value, int):
+            raise TypeError("Value must be int")
+        if value < self.min_val or value > self.max_val:
+            raise ValueError(f"Value must be between {self.min_val} and {self.max_val}")
+        print(f"Setting value: {value}")
+        self._value = value
 
-# 3. Подготовка даты
-current_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    def __delete__(self, instance):
+        raise AttributeError("Deletion is not allowed")
 
-# 2. Сохраняет их в файл (с датой)
-with open(file_path, 'w', encoding='utf-8') as f:
-    f.write(f"Дата записи: {current_date}\n")
-    f.write("Случайные числа: " + ", ".join(map(str, numbers)) + "\n")
 
-# 4. Проверяет существование файла
-if os.path.exists(file_path):
-    print(f"Файл {file_path} успешно создан.")
-    
-    # 5. Читает файл и выводит содержимое
-    with open(file_path, 'r', encoding='utf-8') as f:
-        print("\nСодержимое файла:")
-        print(f.read())
+class MyClass:
+    attr = ComplexDescriptor(10, 50)
+
+
+obj = MyClass()
+obj.attr = 25
+print(obj.attr)
+# obj.attr = 5     # ValueError
+# obj.attr = "str" # TypeError
+# del obj.attr     # AttributeError
