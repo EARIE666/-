@@ -1,11 +1,15 @@
-import json
+import asyncio
 
-data = {
-    "name": "Ivan",
-    "age": 25,
-    "skills": ["python", "data"]
-}
+async def task(name, delay):
+    print(f"Задача {name} началась")
+    await asyncio.sleep(delay)
+    print(f"Задача {name} завершена")
 
-with open('data.json', 'w', encoding='utf-8') as f:
-    json.dump(data, f, indent=4)
-print("Данные сохранены в data.json")
+async def main():
+    await asyncio.gather(
+        task("A", 1),
+        task("B", 2),
+        task("C", 1.5)
+    )
+
+asyncio.run(main())
