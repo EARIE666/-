@@ -1,5 +1,3 @@
-import os
-
-if os.path.exists('data.txt'):
-    file_size = os.path.getsize('data.txt')
-    print(f"Размер файла: {file_size} байт")
+with open('input.txt', 'r', encoding='utf-8') as infile, open('output.txt', 'w', encoding='utf-8') as outfile:
+    for i, line in enumerate(infile, start=1):
+        outfile.write(f'{i}: {line}')
