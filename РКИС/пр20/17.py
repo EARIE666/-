@@ -1,12 +1,23 @@
-import csv
+class CachedProperty:
+    def __init__(self, func):
+        self.func = func
+        self.name = func.__name__
 
-users = [
-    ['Name', 'Age', 'Role'],
-    ['Alice', 30, 'Dev'],
-    ['Bob', 25, 'Designer']
-]
+    def __get__(self, instance, owner):
+        if instance is None:
+            return self
+        value = self.func(instance)
+        instance.__dict__[self.name] = value
+        return value
 
-with open('users.csv', 'w', newline='', encoding='utf-8') as f:
-    writer = csv.writer(f)
-    writer.writerows(users)
-print("CSV файл создан")
+
+class Example:
+    @CachedProperty
+    def expensive_calculation(self):
+        print("Calculating...")
+        return 42
+
+
+obj = Example()
+print(obj.expensive_calculation)
+print(obj.expensive_calculation)
