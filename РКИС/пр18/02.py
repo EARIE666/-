@@ -1,2 +1,2 @@
-import math
-print(math.factorial(5))
+with open('output.txt', 'w', encoding = 'utf-8') as file:
+    file.write('Hello World!')
