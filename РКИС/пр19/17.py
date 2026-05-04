@@ -1,12 +1,21 @@
-import csv
+import asyncio
+import time
 
-users = [
-    ['Name', 'Age', 'Role'],
-    ['Alice', 30, 'Dev'],
-    ['Bob', 25, 'Designer']
-]
+async def delayed_task(task_id, delay):
+    start_time = time.time()
+    print(f"Задача {task_id} запущена, задержка: {delay}с")
+    await asyncio.sleep(delay)
+    end_time = time.time()
+    print(f"Задача {task_id} завершена через {end_time - start_time:.2f}с")
 
-with open('users.csv', 'w', newline='', encoding='utf-8') as f:
-    writer = csv.writer(f)
-    writer.writerows(users)
-print("CSV файл создан")
+async def main():
+    tasks = [
+        delayed_task(1, 3),
+        delayed_task(2, 1),
+        delayed_task(3, 2),
+        delayed_task(4, 0.5),
+        delayed_task(5, 1.5)
+    ]
+    await asyncio.gather(*tasks)
+
+asyncio.run(main())
