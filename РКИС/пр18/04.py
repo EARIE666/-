@@ -1,3 +1,3 @@
-import math
-x = 3.7
-print(math.floor(x), math.ceil(x))
+with open('input.txt', 'r', encoding = 'utf-8') as file:
+    for i in file:
+        print(i)
