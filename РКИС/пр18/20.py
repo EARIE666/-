@@ -1,25 +1,38 @@
-import random
-import os
-from datetime import datetime
+class SafeFileManager:
+    """Контекстный менеджер для безопасной работы с файлами."""
 
-file_path = 'numbers.txt'
+    def __init__(self, filename, mode='r', encoding='utf-8'):
+        self.filename = filename
+        self.mode = mode
+        self.encoding = encoding
+        self.file = None
 
-# 1. Генерирует 5 случайных чисел
-numbers = [random.randint(1, 100) for _ in range(5)]
+    def __enter__(self):
+        try:
+            self.file = open(self.filename, self.mode, encoding=self.encoding)
+            return self.file
+        except Exception as e:
+            print(f"Ошибка открытия файла {self.filename}: {e}")
+            return None
 
-# 3. Подготовка даты
-current_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    def __exit__(self, exc_type, exc_value, traceback):
+        if self.file:
+            self.file.close()
+        print("File closed")
+        # Не подавляем исключения
+        return False
 
-# 2. Сохраняет их в файл (с датой)
-with open(file_path, 'w', encoding='utf-8') as f:
-    f.write(f"Дата записи: {current_date}\n")
-    f.write("Случайные числа: " + ", ".join(map(str, numbers)) + "\n")
+# Примеры использования
 
-# 4. Проверяет существование файла
-if os.path.exists(file_path):
-    print(f"Файл {file_path} успешно создан.")
-    
-    # 5. Читает файл и выводит содержимое
-    with open(file_path, 'r', encoding='utf-8') as f:
-        print("\nСодержимое файла:")
-        print(f.read())
+# Чтение файла (успешно)
+with SafeFileManager('app.log', 'r') as file:
+    if file:
+        content = file.read()
+        print("Содержимое файла прочитано")
+
+# Попытка открыть несуществующий файл
+with SafeFileManager('nonexistent.txt', 'r') as file:
+    if file:
+        content = file.read()
+    else:
+        print("Файл не открыт, операция отменена")
