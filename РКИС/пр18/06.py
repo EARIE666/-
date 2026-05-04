@@ -1,4 +1,7 @@
-import random
-list = [1, 2, 3, 4, 5]
-random.shuffle(list)
-print(list)
+k = 0
+
+with open('input.txt', 'r', encoding = 'utf-8') as file:
+    for i in file:
+        k += len(i.split())
+
+print(k)
