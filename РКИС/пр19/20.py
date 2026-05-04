@@ -1,25 +1,33 @@
+import asyncio
 import random
-import os
-from datetime import datetime
 
-file_path = 'numbers.txt'
+async def worker(worker_id, task_queue):
+    while True:
+        task = await task_queue.get()
+        if task is None:
+            print(f"Worker {worker_id}: завершает работу")
+            break
 
-# 1. Генерирует 5 случайных чисел
-numbers = [random.randint(1, 100) for _ in range(5)]
+        delay = random.uniform(1, 3)
+        print(f"Worker {worker_id}: начал задачу {task} (задержка: {delay:.2f}с)")
+        await asyncio.sleep(delay)
+        print(f"Worker {worker_id}: завершил задачу {task}")
+        task_queue.task_done()
 
-# 3. Подготовка даты
-current_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+async def main():
+    task_queue = asyncio.Queue()
 
-# 2. Сохраняет их в файл (с датой)
-with open(file_path, 'w', encoding='utf-8') as f:
-    f.write(f"Дата записи: {current_date}\n")
-    f.write("Случайные числа: " + ", ".join(map(str, numbers)) + "\n")
+    workers = [
+        asyncio.create_task(worker(i, task_queue)) for i in range(3)
+    ]
 
-# 4. Проверяет существование файла
-if os.path.exists(file_path):
-    print(f"Файл {file_path} успешно создан.")
-    
-    # 5. Читает файл и выводит содержимое
-    with open(file_path, 'r', encoding='utf-8') as f:
-        print("\nСодержимое файла:")
-        print(f.read())
+    for task_id in range(10):
+        await task_queue.put(f"Task-{task_id}")
+
+    await task_queue.join()
+
+    for _ in workers:
+        await task_queue.put(None)
+    await asyncio.gather(*workers)
+
+asyncio.run(main())
