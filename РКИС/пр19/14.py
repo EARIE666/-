@@ -1,6 +1,8 @@
-import os
+import asyncio
 
-folder = 'folder'
-file_name = 'file.txt'
-full_path = os.path.join(folder, file_name)
-print(full_path) 
+async def simple_async_function():
+    print("Начало выполнения")
+    await asyncio.sleep(1)
+    print("Сообщение после задержки")
+
+asyncio.run(simple_async_function())
