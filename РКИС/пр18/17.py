@@ -1,12 +1,14 @@
-import csv
+def read_error_logs(filename='app.log'):
 
-users = [
-    ['Name', 'Age', 'Role'],
-    ['Alice', 30, 'Dev'],
-    ['Bob', 25, 'Designer']
-]
+    try:
+        with open(filename, 'r', encoding='utf-8') as log_file:
+            for line in log_file:
+                if 'ERROR' in line:
+                    print(line.rstrip())
+    except FileNotFoundError:
+        print(f"Файл {filename} не найден.")
+    except Exception as e:
+        print(f"Ошибка при чтении файла: {e}")
 
-with open('users.csv', 'w', newline='', encoding='utf-8') as f:
-    writer = csv.writer(f)
-    writer.writerows(users)
-print("CSV файл создан")
+# Пример использования
+read_error_logs()
