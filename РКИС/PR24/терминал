@@ -1,0 +1,47 @@
+@EARIE666 ➜ /workspaces/IS-31k (main) $ git add .gitignore
+@EARIE666 ➜ /workspaces/IS-31k (main) $  git commit -m "Add .gitignore to exclude logs and local configs"
+[main 623647a] Add .gitignore to exclude logs and local configs
+ 1 file changed, 5 insertions(+)
+ create mode 100644 .gitignore
+@EARIE666 ➜ /workspaces/IS-31k (main) $   git checkout -b featurecomplex-layout
+Switched to a new branch 'featurecomplex-layout'
+@EARIE666 ➜ /workspaces/IS-31k (featurecomplex-layout) $  git checkout main
+M       index.html
+Switched to branch 'main'
+Your branch is ahead of 'origin/main' by 1 commit.
+  (use "git push" to publish your local commits)
+@EARIE666 ➜ /workspaces/IS-31k (main) $   git stash -m "started complex layout"
+Saved working directory and index state On main: started complex layout
+@EARIE666 ➜ /workspaces/IS-31k (main) $  git checkout main
+Already on 'main'
+Your branch is ahead of 'origin/main' by 1 commit.
+  (use "git push" to publish your local commits)
+@EARIE666 ➜ /workspaces/IS-31k (main) $ git add index.html
+@EARIE666 ➜ /workspaces/IS-31k (main) $   git commit -m "correct typo in heading" 
+[main c88c833] correct typo in heading
+ 1 file changed, 1 insertion(+)
+@EARIE666 ➜ /workspaces/IS-31k (main) $   git checkout feature/complex-layout
+error: pathspec 'feature/complex-layout' did not match any file(s) known to git
+@EARIE666 ➜ /workspaces/IS-31k (main) $   git checkout featurecomplex-layout
+Switched to branch 'featurecomplex-layout'
+@EARIE666 ➜ /workspaces/IS-31k (featurecomplex-layout) $ git stash list 
+stash@{0}: On main: started complex layout
+@EARIE666 ➜ /workspaces/IS-31k (featurecomplex-layout) $ git stash pop 
+On branch featurecomplex-layout
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   index.html
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .env.local
+        debug.log
+
+no changes added to commit (use "git add" and/or "git commit -a")
+Dropped refs/stash@{0} (0416abf4842c4b5d02bd8438d81c3fc3a6d0b8cc)
+@EARIE666 ➜ /workspaces/IS-31k (featurecomplex-layout) $ git add index.html
+@EARIE666 ➜ /workspaces/IS-31k (featurecomplex-layout) $ git commit -m "Complete complex layout" 
+[featurecomplex-layout f4e85a2] Complete complex layout
+ 1 file changed, 2 insertions(+)
+@EARIE666 ➜ /workspaces/IS-31k (featurecomplex-layout) $ 
